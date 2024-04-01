@@ -199,7 +199,7 @@ jobs:
           zone: ${{ secrets.CLOUDFLARE_ZONE }}
 
       - name: Clone the branch to the Hetzner instance
-        run: ssh root@$SERVER_IPV4 git clone https://github.com/notthebee/ansible-easy-vpn -b ${{ github.head_ref || github.ref_name }}
+        run: ssh root@$SERVER_IPV4 git clone https://github.com/iomarcovalente/ansible-easy-vpn -b ${{ github.head_ref || github.ref_name }}
         env:
           GIT_SSL_NO_VERIFY: "true"
 
@@ -244,7 +244,7 @@ jobs:
 
       - name: Copy the private key to the Github root
         run: cp $HOME/.ssh/id_vpn id_vpn
-        
+
       - name: Log into the server and execute the script again for idempotency
         run: >-
           ssh -t -t $EASYVPN_USERNAME@$SERVER_IPV4 "export LETSENCRYPT_STAGING=$LETSENCRYPT_STAGING; ansible-easy-vpn/testing/expect/idempotency.exp --password $EASYVPN_PASSWORD"
@@ -397,7 +397,7 @@ jobs:
           EASYVPN_PASSWORD: "${{ needs.build.outputs[format('EASYVPN_PASSWORD_{0}', matrix.index)] }}"
           DOMAIN: "${{ needs.build.outputs[format('EASYVPN_USERNAME_{0}', matrix.index)] }}.${{ secrets.CLOUDFLARE_DOMAIN }}"
 
-      - name: Upload Selenium testing screenshots 
+      - name: Upload Selenium testing screenshots
         if: always()
         uses: actions/upload-artifact@v4
         with:
